@@ -8,6 +8,7 @@ import {ShopCartReqDto} from "@src/modules/shopCart/dto/shopCart.req.dto";
 import {PageEnum} from "@src/enums";
 import {ProductEntity} from "@src/modules/product/entities/product.entity";
 import {ProductSpecificationEntity} from "@src/modules/productSpecification/entities/productSpecification.entity";
+import {Big} from "big.js";
 
 @Injectable()
 export class ShopCartService {
@@ -28,7 +29,7 @@ export class ShopCartService {
     if (!product) throw new Error("商品不存在");
     shopCart.product = product;
     let productSpecification = await this.productSpecificationRepository.findOne(createShopCartDto.product_specification_id);
-    if (!productSpecification)  throw new Error("商品规格不存在");
+    if (!productSpecification) throw new Error("商品规格不存在");
     shopCart.productSpecification = productSpecification;
     shopCart.count = createShopCartDto.count;
     let resCreate = await this.shopCartRepository.save(shopCart);
@@ -44,7 +45,7 @@ export class ShopCartService {
       relations: ["product", "productSpecification"]
     });
     if (shopCart) {
-      let total_price = Number(shopCart.productSpecification.price).mul(shopCart.count);
+      let total_price = new Big(shopCart.productSpecification.price).mul(shopCart.count).toNumber();
       return {...shopCart, total_price};
     } else {
       throw new Error("查询失败");
@@ -62,7 +63,7 @@ export class ShopCartService {
       relations: ["product", "productSpecification"]
     });
     let tempList = list.map(item => {
-      let total_price = Number(item.productSpecification.price).mul(item.count);
+      let total_price = new Big(item.productSpecification.price).mul(item.count).toNumber();
       return {...item, total_price};
     });
     return {
