@@ -2,11 +2,10 @@ import {
   Entity,
   Column,
   ManyToOne,
-  JoinColumn, ManyToMany, JoinTable, OneToMany, Index,
+  JoinColumn, ManyToMany, JoinTable, Index,
 } from 'typeorm';
 import {BrandEntity} from '@src/modules/Brand/entities/brand.entity';
 import {TagEntity} from "@src/modules/tag/entities/tag.entity";
-import {ProductSpecificationEntity} from "@src/modules/ProductSpecification/entities/ProductSpecification.entity";
 import {SharedEntity} from "@src/modules/shared/entities/shared.entity";
 
 @Entity('product')
@@ -50,7 +49,4 @@ export class ProductEntity extends SharedEntity {
   @ManyToMany(() => TagEntity, tag => tag.products)
   @JoinTable()
   tags: TagEntity[];
-
-  @OneToMany(() => ProductSpecificationEntity, spec => spec.product)
-  specifications: ProductSpecificationEntity[];
 }
