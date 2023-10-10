@@ -10,6 +10,9 @@ import {join} from "path";
 import {NestExpressApplication} from "@nestjs/platform-express";
 // import { TransformInterceptor } from './interceptors/transform/transform.interceptor';
 
+// @ts-ignore
+import {NumberOperation} from "@src/utils/libs/NumberOperation";
+
 const PORT = process.env.PORT || 8080;
 const PREFIX = process.env.PREFIX || '/';
 export const IS_DEV = process.env.NODE_ENV !== 'production';

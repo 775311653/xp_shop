@@ -19,6 +19,7 @@ import {TagModule} from "@src/modules/tag/tag.module";
 import {SpecificationModule} from "@src/modules/specification/specification.module";
 import {SpecificationOptionModule} from "@src/modules/specificationOption/specificationOption.module";
 import {ProductSpecificationModule} from "@src/modules/productSpecification/productSpecification.module";
+import {ShopCartModule} from "@src/modules/shopCart/shopCart.module";
 
 @Module({
   imports: [
@@ -69,6 +70,7 @@ import {ProductSpecificationModule} from "@src/modules/productSpecification/prod
     SpecificationModule,
     SpecificationOptionModule,
     ProductSpecificationModule,
+    ShopCartModule,
   ],
   controllers: [],
   providers: [
