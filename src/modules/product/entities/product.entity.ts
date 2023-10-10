@@ -2,11 +2,12 @@ import {
   Entity,
   Column,
   ManyToOne,
-  JoinColumn, ManyToMany, JoinTable, Index,
+  JoinColumn, ManyToMany, JoinTable, Index, OneToMany,
 } from 'typeorm';
 import {BrandEntity} from '@src/modules/Brand/entities/brand.entity';
 import {TagEntity} from "@src/modules/tag/entities/tag.entity";
 import {SharedEntity} from "@src/modules/shared/entities/shared.entity";
+import {ProductSpecificationEntity} from "@src/modules/productSpecification/entities/productSpecification.entity";
 
 @Entity('product')
 @Index(['name']) // Indexed as it might be a commonly searched field
@@ -49,4 +50,11 @@ export class ProductEntity extends SharedEntity {
   @ManyToMany(() => TagEntity, tag => tag.products)
   @JoinTable()
   tags: TagEntity[];
+
+//  export class ProductSpecificationEntity extends SharedEntity {
+//   @ManyToOne(() => ProductEntity)
+//   product: ProductEntity;
+
+  @OneToMany(() => ProductEntity, product => product.product_specifications)
+  product_specifications: ProductSpecificationEntity[];
 }

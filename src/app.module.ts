@@ -18,6 +18,7 @@ import {BrandModule} from "@src/modules/brand/brand.module";
 import {TagModule} from "@src/modules/tag/tag.module";
 import {SpecificationModule} from "@src/modules/specification/specification.module";
 import {SpecificationOptionModule} from "@src/modules/specificationOption/specificationOption.module";
+import {ProductSpecificationModule} from "@src/modules/productSpecification/productSpecification.module";
 
 @Module({
   imports: [
@@ -67,6 +68,7 @@ import {SpecificationOptionModule} from "@src/modules/specificationOption/specif
     TagModule,
     SpecificationModule,
     SpecificationOptionModule,
+    ProductSpecificationModule,
   ],
   controllers: [],
   providers: [
