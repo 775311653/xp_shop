@@ -1,49 +1,49 @@
-import { IsString, IsOptional, IsInt, IsArray, IsNumber, IsDate } from 'class-validator';
-import { Type } from 'class-transformer';
-import { ApiProperty } from '@nestjs/swagger';
+import {IsString, IsOptional, IsInt, IsArray, IsNumber, IsDate} from 'class-validator';
+import {Type} from 'class-transformer';
+import {ApiProperty} from '@nestjs/swagger';
 
 export class ProductDTO {
 
   @IsString()
   @ApiProperty({
-    description: 'The main image URL of the product.',
+    description: '产品主图的URL',
     example: '/static/imgs/product1.png'
   })
   main_img_url: string;
 
   @IsArray()
-  @IsString({ each: true })
+  @IsString({each: true})
   @IsOptional()
   @ApiProperty({
-    description: 'An array of URLs for additional product images.',
+    description: '产品图片的URL',
     example: ['/static/imgs/product1.png', '/static/imgs/product2.png']
   })
   img_urls?: string[];
 
   @IsString()
   @ApiProperty({
-    description: 'The name of the product.',
+    description: '产品名称',
     example: 'Example Product Name'
   })
   name: string;
 
   @IsInt()
   @ApiProperty({
-    description: 'The ID representing the brand of the product.',
+    description: '品牌ID',
     example: 2
   })
   brand_id: number;
 
   @IsNumber()
   @ApiProperty({
-    description: 'The raw price of the product before any discounts.',
+    description: '原始价格',
     example: 100.20
   })
   raw_price: number;
 
   @IsNumber()
   @ApiProperty({
-    description: 'The actual selling price of the product after any applicable discounts.',
+    description: '实际价格',
     example: 90.30
   })
   real_price: number;
@@ -51,16 +51,16 @@ export class ProductDTO {
   @IsString()
   @IsOptional()
   @ApiProperty({
-    description: 'A brief introduction of the product.',
-    example: 'This is a brief introduction of the product.'
+    description: '产品简介',
+    example: '这是产品简介内容'
   })
   intro?: string;
 
   @IsString()
   @IsOptional()
   @ApiProperty({
-    description: 'Detailed information about the product.',
-    example: 'This is a detailed description of the product. It may include its features, benefits, and any other relevant information.'
+    description: '产品详细介绍',
+    example: '这是产品详细介绍内容'
   })
   detail?: string;
 
@@ -68,7 +68,7 @@ export class ProductDTO {
   @IsOptional()
   @Type(() => Date)
   @ApiProperty({
-    description: 'The potential start date and time for the delivery of the product.',
+    description: '产品预计物流发货开始时间',
     example: '2023-10-10T12:00:00Z'
   })
   maybe_delivery_time_start_at?: Date;
@@ -77,7 +77,7 @@ export class ProductDTO {
   @IsOptional()
   @Type(() => Date)
   @ApiProperty({
-    description: 'The potential end date and time for the delivery of the product.',
+    description: '产品预计物流发货结束时间',
     example: '2023-10-15T12:00:00Z'
   })
   maybe_delivery_time_end_at?: Date;
