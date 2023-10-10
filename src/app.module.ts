@@ -16,6 +16,7 @@ import {TransformInterceptor} from './interceptors/transform/transform.intercept
 import {ProductModule} from "@src/modules/Product/product.module";
 import {BrandModule} from "@src/modules/brand/brand.module";
 import {TagModule} from "@src/modules/tag/tag.module";
+import {SpecificationModule} from "@src/modules/specification/specification.module";
 
 @Module({
   imports: [
@@ -34,11 +35,9 @@ import {TagModule} from "@src/modules/tag/tag.module";
         database: config.get('database.database'),
         entities: [
           __dirname + '/**/*.entity{.ts,.js}',
+          __dirname + '/modules/specification/entities/*.entity{.ts,.js}',
           __dirname + '/modules/brand/entities/*.entity{.ts,.js}',
           __dirname + '/modules/product/entities/*.entity{.ts,.js}',
-          __dirname + '/modules/productSpecification/entities/*.entity{.ts,.js}',
-          __dirname + '/modules/specification/entities/*.entity{.ts,.js}',
-          __dirname + '/modules/specificationOption/entities/*.entity{.ts,.js}',
           __dirname + '/modules/tag/entities/*.entity{.ts,.js}',
           // __dirname + '/modules/**/*entity{.ts,.js}',
         ],
@@ -65,6 +64,7 @@ import {TagModule} from "@src/modules/tag/tag.module";
     ProductModule,
     BrandModule,
     TagModule,
+    SpecificationModule,
   ],
   controllers: [],
   providers: [
