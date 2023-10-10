@@ -15,6 +15,7 @@ import {ValidationPipe} from './pipe/validation/validation.pipe';
 import {TransformInterceptor} from './interceptors/transform/transform.interceptor';
 import {ProductModule} from "@src/modules/Product/product.module";
 import {BrandModule} from "@src/modules/brand/brand.module";
+import {TagModule} from "@src/modules/tag/tag.module";
 
 @Module({
   imports: [
@@ -63,6 +64,7 @@ import {BrandModule} from "@src/modules/brand/brand.module";
     SharedModule,
     ProductModule,
     BrandModule,
+    TagModule,
   ],
   controllers: [],
   providers: [
