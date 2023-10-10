@@ -1,29 +1,28 @@
 import {Module} from '@nestjs/common';
-import {SpecificationController} from "@src/modules/specification/specification.controller";
-import {SpecificationService} from "@src/modules/specification/specification.service";
+import {SpecificationOptionController} from "@src/modules/specificationOption/specificationOption.controller";
+import {SpecificationOptionService} from "@src/modules/specificationOption/specificationOption.service";
 import {TypeOrmModule} from "@nestjs/typeorm";
-import {SpecificationEntity} from "@src/modules/specification/entities/specification.entity";
 import {TagEntity} from "@src/modules/tag/entities/tag.entity";
-import {ProductEntity} from "@src/modules/product/entities/product.entity";
 import {SpecificationOptionEntity} from "@src/modules/specificationOption/entities/specificationOption.entity";
+import {SpecificationEntity} from "@src/modules/specification/entities/specification.entity";
 
 // import {BrandEntity} from "@src/modules/Brand/entities/brand.entity";
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([
-      SpecificationEntity,
       SpecificationOptionEntity,
+      // BrandEntity,
       TagEntity,
-      ProductEntity,
+      SpecificationEntity,
     ]),
   ],
   controllers: [
-    SpecificationController,
+    SpecificationOptionController,
   ],
   providers: [
-    SpecificationService,
+    SpecificationOptionService,
   ],
 })
-export class SpecificationModule {
+export class SpecificationOptionModule {
 }

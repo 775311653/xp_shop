@@ -26,7 +26,9 @@ export class SpecificationService {
   }
 
   async getSpecification(id: number): Promise<SpecificationVo> {
-    let specification = await this.specificationRepository.findOne(id);
+    let specification = await this.specificationRepository.findOne(id,{
+      relations: ["options"]
+    });
     if (specification) {
       return specification;
     } else {

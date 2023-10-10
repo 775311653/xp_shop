@@ -17,6 +17,7 @@ import {ProductModule} from "@src/modules/Product/product.module";
 import {BrandModule} from "@src/modules/brand/brand.module";
 import {TagModule} from "@src/modules/tag/tag.module";
 import {SpecificationModule} from "@src/modules/specification/specification.module";
+import {SpecificationOptionModule} from "@src/modules/specificationOption/specificationOption.module";
 
 @Module({
   imports: [
@@ -65,6 +66,7 @@ import {SpecificationModule} from "@src/modules/specification/specification.modu
     BrandModule,
     TagModule,
     SpecificationModule,
+    SpecificationOptionModule,
   ],
   controllers: [],
   providers: [
