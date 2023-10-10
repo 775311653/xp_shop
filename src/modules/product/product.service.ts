@@ -6,17 +6,24 @@ import {Repository} from "typeorm";
 import {ProductListVo, ProductVo} from "@src/modules/product/product.vo";
 import {ProductReqDto} from "@src/modules/product/dto/product.req.dto";
 import {PageEnum} from "@src/enums";
+import {TagEntity} from "@src/modules/tag/entities/tag.entity";
 
 @Injectable()
 export class ProductService {
   constructor(
     @InjectRepository(ProductEntity)
     private readonly productRepository: Repository<ProductEntity>,
+    @InjectRepository(TagEntity)
+    private readonly tagRepository: Repository<TagEntity>,
   ) {
   }
 
   async createProduct(createProductDto: ProductDTO): Promise<string> {
+    const tags = await this.tagRepository.findByIds(createProductDto.tag_ids);
     const product = this.productRepository.create(createProductDto);
+    if (tags && tags.length > 0) {
+      product.tags = tags;
+    }
     let resCreate = await this.productRepository.save(product);
     if (resCreate) {
       return "创建成功";
@@ -35,14 +42,32 @@ export class ProductService {
   }
 
   async getProductList(productReqDto: ProductReqDto): Promise<ProductListVo> {
-    const {
+    let {
       pageSize = PageEnum.PAGE_SIZE,
       pageNumber = PageEnum.PAGE_NUMBER,
+      real_price_sort = "ASC",
+      tag_ids,
+      ...otherParams
     } = productReqDto;
-    let [list, total] = await this.productRepository.findAndCount({
-      skip: (pageNumber - 1) * pageSize,
-      take: pageSize,
-    });
+
+    const queryBuilder = this.productRepository.createQueryBuilder("product");
+    queryBuilder.skip((pageNumber - 1) * pageSize);
+    queryBuilder.take(pageSize);
+    queryBuilder.leftJoinAndSelect("product.brand", "brand");
+    queryBuilder.where(otherParams ?? {});
+    if (real_price_sort === 'ASC' || real_price_sort === 'DESC') {
+      queryBuilder.orderBy("product.real_price", real_price_sort);
+    }
+    if (tag_ids && tag_ids.length > 0) {
+      tag_ids = tag_ids.map((item) => parseInt(String(item)));
+      queryBuilder
+        .leftJoinAndSelect("product.tags", "tag")
+        .where("tag.id IN (:...tag_ids)", {tag_ids});
+    }
+
+    const [list, total] = await queryBuilder.getManyAndCount();
+
+
     return {
       data: list,
       total,

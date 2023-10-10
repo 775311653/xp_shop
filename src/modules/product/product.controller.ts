@@ -9,7 +9,7 @@ import {
   ParseIntPipe,
   Patch,
   Post,
-  Query
+  Query, ValidationPipe
 } from "@nestjs/common";
 import {ApiOkResponse, ApiOperation, ApiTags} from "@nestjs/swagger";
 import {ProductService} from "@src/modules/Product/product.service";
@@ -38,7 +38,7 @@ export class ProductController {
     description: '获取商品列表返回值',
   })
   @HttpCode(HttpStatus.OK)
-  async getProductList(@Query() productReqDto: ProductReqDto): Promise<ProductListVo> {
+  async getProductList(@Query(new ValidationPipe({ transform: true })) productReqDto: ProductReqDto): Promise<ProductListVo> {
     return await this.productService.getProductList(productReqDto);
   }
 

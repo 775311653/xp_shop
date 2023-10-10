@@ -1,6 +1,6 @@
 import {IsString, IsOptional, IsInt, IsArray, IsNumber, IsDate} from 'class-validator';
 import {Type} from 'class-transformer';
-import {ApiProperty} from '@nestjs/swagger';
+import {ApiProperty, ApiPropertyOptional} from '@nestjs/swagger';
 
 export class ProductDTO {
 
@@ -63,6 +63,11 @@ export class ProductDTO {
     example: '这是产品详细介绍内容'
   })
   detail?: string;
+
+  @IsArray()
+  @IsOptional()
+  @ApiPropertyOptional({required: false, description: '标签id数组', example: [1, 2, 3]})
+  tag_ids: number[];
 
   @IsDate()
   @IsOptional()
