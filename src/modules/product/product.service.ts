@@ -7,6 +7,7 @@ import {ProductListVo, ProductVo} from "@src/modules/product/product.vo";
 import {ProductReqDto} from "@src/modules/product/dto/product.req.dto";
 import {PageEnum} from "@src/enums";
 import {TagEntity} from "@src/modules/tag/entities/tag.entity";
+import config from "@src/config";
 
 @Injectable()
 export class ProductService {
@@ -33,8 +34,12 @@ export class ProductService {
   }
 
   async getProduct(id: number): Promise<ProductVo> {
-    let product = await this.productRepository.findOne(id);
+    let product = await this.productRepository.findOne(id,{
+      relations: ['brand','tags',]
+    });
     if (product) {
+      product.main_img_url = config.url.baseUrl + product.main_img_url;
+      product.img_urls = product.img_urls?.map((item) => config.url.baseUrl + item);
       return product;
     } else {
       throw new Error("查询失败");
@@ -67,6 +72,10 @@ export class ProductService {
 
     const [list, total] = await queryBuilder.getManyAndCount();
 
+    list.forEach((item) => {
+      item.main_img_url = config.url.baseUrl + item.main_img_url;
+      item.img_urls = item.img_urls?.map((item) => config.url.baseUrl + item);
+    });
 
     return {
       data: list,
