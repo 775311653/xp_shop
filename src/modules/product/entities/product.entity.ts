@@ -55,6 +55,6 @@ export class ProductEntity extends SharedEntity {
 //   @ManyToOne(() => ProductEntity)
 //   product: ProductEntity;
 
-  @OneToMany(() => ProductEntity, product => product.product_specifications)
+  @OneToMany(() => ProductSpecificationEntity, product_specification => product_specification.product)
   product_specifications: ProductSpecificationEntity[];
 }

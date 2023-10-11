@@ -7,6 +7,7 @@ import {ProductListVo, ProductVo} from "@src/modules/product/product.vo";
 import {ProductReqDto} from "@src/modules/product/dto/product.req.dto";
 import {PageEnum} from "@src/enums";
 import {TagEntity} from "@src/modules/tag/entities/tag.entity";
+import {SpecificationOptionEntity} from "@src/modules/specificationOption/entities/specificationOption.entity";
 import config from "@src/config";
 
 @Injectable()
@@ -16,6 +17,8 @@ export class ProductService {
     private readonly productRepository: Repository<ProductEntity>,
     @InjectRepository(TagEntity)
     private readonly tagRepository: Repository<TagEntity>,
+    @InjectRepository(SpecificationOptionEntity)
+    private readonly specificationOptionRepository: Repository<SpecificationOptionEntity>,
   ) {
   }
 
@@ -34,13 +37,30 @@ export class ProductService {
   }
 
   async getProduct(id: number): Promise<ProductVo> {
-    let product = await this.productRepository.findOne(id,{
-      relations: ['brand','tags',]
-    });
+    const queryBuilder = this.productRepository.createQueryBuilder("product");
+    queryBuilder.leftJoinAndSelect("product.brand", "brand");
+    queryBuilder.leftJoinAndSelect("product.tags", "tag");
+    queryBuilder.leftJoinAndSelect("product.product_specifications", "product_specification");
+    queryBuilder.where("product.id = :id", {id});
+    const product = await queryBuilder.getOne();
+    let specificationOptions: any = [];
     if (product) {
       product.main_img_url = config.url.baseUrl + product.main_img_url;
       product.img_urls = product.img_urls?.map((item) => config.url.baseUrl + item);
-      return product;
+
+      //如果product_specifications不为空，就取出所有的规格和规格选项，返回。然后前端根据规格和规格选项组合出所有的sku。
+      if (product.product_specifications && product.product_specifications.length > 0) {
+        let specificationOptionIds: any = [];
+        product.product_specifications.forEach((item) => {
+          specificationOptionIds.push(...item.specification_option_ids);
+        });
+        specificationOptionIds = [...new Set(specificationOptionIds)];
+        specificationOptions = await this.specificationOptionRepository.findByIds(specificationOptionIds, {
+          relations: ["specification",],
+        });
+      }
+
+      return {...product, specification_options: specificationOptions};
     } else {
       throw new Error("查询失败");
     }
