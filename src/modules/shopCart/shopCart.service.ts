@@ -32,6 +32,24 @@ export class ShopCartService {
     if (!productSpecification) throw new Error("商品规格不存在");
     shopCart.productSpecification = productSpecification;
     shopCart.count = createShopCartDto.count;
+
+    //如果购物车中已经存在该商品且规格相同，则数量相加,只会有一条记录
+    let shopCartExist = await this.shopCartRepository.findOne({
+      where: {
+        product: product,
+        productSpecification: productSpecification
+      }
+    });
+    if (shopCartExist) {
+      shopCartExist.count = Big(shopCartExist.count).plus(shopCart.count).toNumber();
+      let resUpdate = await this.shopCartRepository.update(shopCartExist.id, shopCartExist);
+      if (resUpdate) {
+        return "更新成功";
+      } else {
+        throw new Error("更新失败");
+      }
+    }
+
     let resCreate = await this.shopCartRepository.save(shopCart);
     if (resCreate) {
       return "创建成功";
