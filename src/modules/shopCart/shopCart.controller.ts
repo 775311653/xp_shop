@@ -16,6 +16,7 @@ import {ShopCartService} from "@src/modules/shopCart/shopCart.service";
 import {ShopCartDto} from "@src/modules/shopCart/dto/shopCart.dto";
 import {ShopCartListVo, ShopCartVo} from "@src/modules/shopCart/shopCart.vo";
 import {ShopCartReqDto} from "@src/modules/shopCart/dto/shopCart.req.dto";
+import {UpdateShopCartDto} from "@src/modules/shopCart/dto/update.shopCart.dto";
 
 @ApiTags('购物车管理')
 @Controller('shopCart')
@@ -63,8 +64,8 @@ export class ShopCartController {
     description: '修改购物车返回值',
   })
   @HttpCode(HttpStatus.OK)
-  async modifyShopCartById(@Param('id', new ParseIntPipe()) id: number, @Body() shopCartDTO: ShopCartDto): Promise<ShopCartVo> {
-    return await this.shopCartService.modifyShopCartById(id, shopCartDTO);
+  async modifyShopCartById(@Param('id', new ParseIntPipe()) id: number, @Body() updateShopCartDto: UpdateShopCartDto): Promise<ShopCartVo> {
+    return await this.shopCartService.modifyShopCartById(id, updateShopCartDto);
   }
 
   @Delete(':id')

@@ -9,6 +9,8 @@ import {PageEnum} from "@src/enums";
 import {ProductEntity} from "@src/modules/product/entities/product.entity";
 import {ProductSpecificationEntity} from "@src/modules/productSpecification/entities/productSpecification.entity";
 import {Big} from "big.js";
+import config from "@src/config";
+import {UpdateShopCartDto} from "@src/modules/shopCart/dto/update.shopCart.dto";
 
 @Injectable()
 export class ShopCartService {
@@ -63,6 +65,8 @@ export class ShopCartService {
       relations: ["product", "productSpecification"]
     });
     if (shopCart) {
+      shopCart.product.main_img_url = config.url.baseUrl + shopCart.product.main_img_url;
+      shopCart.product.img_urls = shopCart.product.img_urls?.map((item) => config.url.baseUrl + item);
       let total_price = new Big(shopCart.productSpecification.price).mul(shopCart.count).toNumber();
       return {...shopCart, total_price};
     } else {
@@ -81,6 +85,8 @@ export class ShopCartService {
       relations: ["product", "productSpecification"]
     });
     let tempList = list.map(item => {
+      item.product.main_img_url = config.url.baseUrl + item.product.main_img_url;
+      item.product.img_urls = item.product.img_urls?.map((item) => config.url.baseUrl + item);
       let total_price = new Big(item.productSpecification.price).mul(item.count).toNumber();
       return {...item, total_price};
     });
@@ -92,8 +98,8 @@ export class ShopCartService {
     };
   }
 
-  async modifyShopCartById(id: number, shopCartDTO: ShopCartDto): Promise<ShopCartVo> {
-    let resUpdate = await this.shopCartRepository.update(id, shopCartDTO);
+  async modifyShopCartById(id: number, updateShopCartDto: UpdateShopCartDto): Promise<ShopCartVo> {
+    let resUpdate = await this.shopCartRepository.update(id, updateShopCartDto);
     if (resUpdate) {
       return await this.getShopCart(id);
     } else {
