@@ -81,12 +81,17 @@ export class ShopCartService {
     const {
       pageSize = PageEnum.PAGE_SIZE,
       pageNumber = PageEnum.PAGE_NUMBER,
+      user_id,
     } = shopCartReqDto;
-    let [list, total] = await this.shopCartRepository.findAndCount({
+    let queryOption: any = {
       skip: (pageNumber - 1) * pageSize,
       take: pageSize,
       relations: ["product", "productSpecification"]
-    });
+    };
+    if (user_id) {
+      queryOption.where = {user_id};
+    }
+    let [list, total] = await this.shopCartRepository.findAndCount(queryOption);
     let tempList = list.map(async item => {
       item.product.main_img_url = config.url.baseUrl + item.product.main_img_url;
       item.product.img_urls = item.product.img_urls?.map((item) => config.url.baseUrl + item);

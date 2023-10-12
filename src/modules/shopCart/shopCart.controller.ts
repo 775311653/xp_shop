@@ -9,7 +9,7 @@ import {
   ParseIntPipe,
   Patch,
   Post,
-  Query
+  Query, ValidationPipe
 } from "@nestjs/common";
 import {ApiOkResponse, ApiOperation, ApiTags} from "@nestjs/swagger";
 import {ShopCartService} from "@src/modules/shopCart/shopCart.service";
@@ -39,7 +39,7 @@ export class ShopCartController {
     description: '获取购物车列表返回值',
   })
   @HttpCode(HttpStatus.OK)
-  async getShopCartList(@Query() shopCartReqDto: ShopCartReqDto): Promise<ShopCartListVo> {
+  async getShopCartList(@Query(new ValidationPipe({ transform: true })) shopCartReqDto: ShopCartReqDto): Promise<ShopCartListVo> {
     return await this.shopCartService.getShopCartList(shopCartReqDto);
   }
 
