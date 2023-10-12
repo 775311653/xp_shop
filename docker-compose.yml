@@ -1,0 +1,63 @@
+version: '3'
+
+services:
+  mysql:
+    image: mysql:8.0
+    command: --default-authentication-plugin=mysql_native_password
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: xp-shop
+#      MYSQL_USER: root
+      MYSQL_PASSWORD: xp123456
+    volumes:
+      - /root/docker/compose/xp-shop-mysql/data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    logging:
+      options:
+        max-size: 50m
+        max-file: "30"
+
+  xp-shop-api:
+    image: xp-shop-img
+    depends_on:
+      - mysql
+    working_dir: /app/
+#    command: npm run pm2:prod
+    command: npm start
+    ports:
+      - "4000:4000"
+    environment:
+      - NODE_ENV=production
+      - PORT=4000
+      - DB_TYPE=mysql
+      - DB_HOST=mysql # 与 docker-compose.yml 中的服务名对应
+      - DB_USERNAME=root
+      - DB_PASSWORD=xp123456
+      - DB_DATABASE=xp_shop
+      - DB_PORT=3306
+      - DB_SYNCHRONIZE=false
+      - DB_LOGGING=true
+      - SECRET=abc
+      - PREFIX=api/v2
+    restart: unless-stopped
+    volumes:
+      - /root/docker/compose/xp-shop-api/data:/data
+      - /root/docker/compose/xp-shop-api/logs:/app/logs
+    logging:
+      options:
+        max-size: 50m
+        max-file: "30"
+
+
+
+  # redis:
+  #   image: redis:5
+  #   ports:
+  #     - "127.0.0.1:6379:6379"
+  #   restart: unless-stopped
+  #   logging:
+  #     options:
+  #       max-size: 50m
+  #       max-file: "3"
