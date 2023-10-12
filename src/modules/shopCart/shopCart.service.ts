@@ -3,11 +3,12 @@ import {Injectable} from "@nestjs/common";
 import {InjectRepository} from "@nestjs/typeorm";
 import {ShopCartEntity} from "@src/modules/shopCart/entities/shopCart.entity";
 import {Repository} from "typeorm";
-import {ShopCartListVo, ShopCartVo} from "@src/modules/shopCart/shopCart.vo";
+import {ShopCartVo} from "@src/modules/shopCart/shopCart.vo";
 import {ShopCartReqDto} from "@src/modules/shopCart/dto/shopCart.req.dto";
 import {PageEnum} from "@src/enums";
 import {ProductEntity} from "@src/modules/product/entities/product.entity";
 import {ProductSpecificationEntity} from "@src/modules/productSpecification/entities/productSpecification.entity";
+import {SpecificationOptionEntity} from "@src/modules/specificationOption/entities/specificationOption.entity";
 import {Big} from "big.js";
 import config from "@src/config";
 import {UpdateShopCartDto} from "@src/modules/shopCart/dto/update.shopCart.dto";
@@ -21,6 +22,8 @@ export class ShopCartService {
     private readonly productRepository: Repository<ProductEntity>,
     @InjectRepository(ProductSpecificationEntity)
     private readonly productSpecificationRepository: Repository<ProductSpecificationEntity>,
+    @InjectRepository(SpecificationOptionEntity)
+    private readonly specificationOptionRepository: Repository<SpecificationOptionEntity>,
   ) {
   }
 
@@ -74,7 +77,7 @@ export class ShopCartService {
     }
   }
 
-  async getShopCartList(shopCartReqDto: ShopCartReqDto): Promise<ShopCartListVo> {
+  async getShopCartList(shopCartReqDto: ShopCartReqDto): Promise<any> {
     const {
       pageSize = PageEnum.PAGE_SIZE,
       pageNumber = PageEnum.PAGE_NUMBER,
@@ -84,12 +87,15 @@ export class ShopCartService {
       take: pageSize,
       relations: ["product", "productSpecification"]
     });
-    let tempList = list.map(item => {
+    let tempList = list.map(async item => {
       item.product.main_img_url = config.url.baseUrl + item.product.main_img_url;
       item.product.img_urls = item.product.img_urls?.map((item) => config.url.baseUrl + item);
       let total_price = new Big(item.productSpecification.price).mul(item.count).toNumber();
-      return {...item, total_price};
+      let specOptions = await this.specificationOptionRepository.findByIds(item.productSpecification.specification_option_ids, {relations: ["specification"]});
+      return {...item, total_price, specOptions};
     });
+    // @ts-ignore
+    tempList = await Promise.all(tempList);
     return {
       data: tempList,
       total,

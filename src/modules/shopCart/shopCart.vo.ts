@@ -19,6 +19,9 @@ export class ShopCartVo extends QueryVo {
 
   @ApiProperty({description: '商品总价'})
   total_price: number;
+
+  @ApiProperty({description: '商品规格选项'})
+  specOptions?: any[];
 }
 
 export class ShopCartListVo extends QueryListVo {
