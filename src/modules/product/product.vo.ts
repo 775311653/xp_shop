@@ -39,7 +39,7 @@ export class ProductVo extends QueryVo {
   brand: BrandVo;
 
   @ApiProperty({ description: '商品规格', isArray: true })
-  specification_options?: any[];
+  specifications?: any[];
 }
 
 export class ProductListVo extends QueryListVo {

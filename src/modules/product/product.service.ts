@@ -43,7 +43,7 @@ export class ProductService {
     queryBuilder.leftJoinAndSelect("product.product_specifications", "product_specification");
     queryBuilder.where("product.id = :id", {id});
     const product = await queryBuilder.getOne();
-    let specificationOptions: any = [];
+    let specifications: any = [];
     if (product) {
       product.main_img_url = config.url.baseUrl + product.main_img_url;
       product.img_urls = product.img_urls?.map((item) => config.url.baseUrl + item);
@@ -55,12 +55,38 @@ export class ProductService {
           specificationOptionIds.push(...item.specification_option_ids);
         });
         specificationOptionIds = [...new Set(specificationOptionIds)];
-        specificationOptions = await this.specificationOptionRepository.findByIds(specificationOptionIds, {
+        let specificationOptions = await this.specificationOptionRepository.findByIds(specificationOptionIds, {
           relations: ["specification",],
         });
+        // 需要把specification放到specificationOption的外部，因为前端需要根据specification来分组规格选项
+        specifications = specificationOptions.reduce((acc:any, currOption:any) => {
+          const foundSpec = acc.find((spec: { id: any; }) => spec.id === currOption.specification.id);
+
+          const newOption = {
+            id: currOption.id,
+            createdAt: currOption.createdAt,
+            updatedAt: currOption.updatedAt,
+            value: currOption.value,
+            specificationId: currOption.specification.id,
+          };
+
+          if (foundSpec) {
+            foundSpec.options.push(newOption);
+          } else {
+            acc.push({
+              id: currOption.specification.id,
+              createdAt: currOption.specification.createdAt,
+              updatedAt: currOption.specification.updatedAt,
+              name: currOption.specification.name,
+              options: [newOption]
+            });
+          }
+
+          return acc;
+        }, []);
       }
 
-      return {...product, specification_options: specificationOptions};
+      return {...product, specifications: specifications};
     } else {
       throw new Error("查询失败");
     }
