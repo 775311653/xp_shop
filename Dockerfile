@@ -1,28 +1,28 @@
-# 然后构建 docker build -t xp-shop-img -f Dockerfile .生成应用镜像,然后后面
-FROM node:20
-
-# 安装 pm2
-RUN npm install -g pm2
-
-RUN npm install -g cnpm
+# 使用带有Yarn的Node.js镜像
+FROM node:18.16.0
 
 # 切换工作目录
 WORKDIR /app
+#复制package到工作目录
+COPY package*.json ./
+# 安装 pm2
+RUN yarn global add pm2
 
-# 复制 package.json 和 package-lock.json
-#COPY package*.json ./
+# 因为您之前安装了cnpm，我假设您可能想使用淘宝的镜像加速，但是Yarn推荐使用淘宝的镜像源，这样：
+RUN yarn config set registry https://registry.npm.taobao.org/
 
-# 将其他代码复制到容器中
-COPY . ./
+RUN yarn global add @nestjs/cli
 
 # 安装项目依赖
-RUN cnpm install
-# 构建NestJS项目
-#RUN npm run build
+RUN yarn install
+
+# 复制当前所有代码到/app工作目录
+COPY . .
+
+# 如果您要运行项目构建命令
+#RUN yarn build
 
 EXPOSE 4000
 
 # 在容器启动时执行pm2
-#CMD ["npm", "run", "pm2:prod"]
-
-
+#CMD ["yarn", "pm2:prod"]

@@ -25,7 +25,8 @@ services:
       - mysql
     working_dir: /app/
 #    command: npm run pm2:prod
-    command: npm start
+#    command: npm start
+    command: /bin/sh -c "yarn start || sleep infinity"
     ports:
       - "4000:4000"
     environment:
@@ -41,7 +42,7 @@ services:
       - DB_LOGGING=true
       - SECRET=abc
       - PREFIX=api/v2
-    restart: unless-stopped
+#    restart: unless-stopped
     volumes:
       - /root/docker/compose/xp-shop-api/data:/data
       - /root/docker/compose/xp-shop-api/logs:/app/logs
