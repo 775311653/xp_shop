@@ -10,6 +10,11 @@ export class ProductReqDto extends QueryOptionsDto {
   @ApiPropertyOptional({required: false, description: '品牌id'})
   brand_id: number;
 
+  @IsString()
+  @IsOptional()
+  @ApiPropertyOptional({required: false, description: '产品名称'})
+  product_name: string;
+
   @IsNumber()
   @IsOptional()
   @ApiPropertyOptional({required: false, description: '原价'})

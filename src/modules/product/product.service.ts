@@ -2,7 +2,7 @@ import {ProductDTO} from "@src/modules/Product/dto/product.dto";
 import {Injectable} from "@nestjs/common";
 import {InjectRepository} from "@nestjs/typeorm";
 import {ProductEntity} from "@src/modules/Product/entities/product.entity";
-import {Repository} from "typeorm";
+import {Like, Repository} from "typeorm";
 import {ProductListVo, ProductVo} from "@src/modules/product/product.vo";
 import {ProductReqDto} from "@src/modules/product/dto/product.req.dto";
 import {PageEnum} from "@src/enums";
@@ -98,14 +98,20 @@ export class ProductService {
       pageNumber = PageEnum.PAGE_NUMBER,
       real_price_sort = "ASC",
       tag_ids,
+      product_name,
       ...otherParams
     } = productReqDto;
+
+    let whereParams: any = {...otherParams};
+    if (product_name) {
+      whereParams.name = Like(`%${product_name}%`);
+    }
 
     const queryBuilder = this.productRepository.createQueryBuilder("product");
     queryBuilder.skip((pageNumber - 1) * pageSize);
     queryBuilder.take(pageSize);
     queryBuilder.leftJoinAndSelect("product.brand", "brand");
-    queryBuilder.where(otherParams ?? {});
+    queryBuilder.where(whereParams);
     if (real_price_sort === 'ASC' || real_price_sort === 'DESC') {
       queryBuilder.orderBy("product.real_price", real_price_sort);
     }
