@@ -13,6 +13,8 @@ RUN yarn config set registry https://registry.npm.taobao.org/
 
 RUN yarn global add @nestjs/cli
 
+RUN su
+
 # 安装项目依赖
 RUN yarn install
 

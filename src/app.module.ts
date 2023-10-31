@@ -40,7 +40,7 @@ import {ShopCartModule} from "@src/modules/shopCart/shopCart.module";
           __dirname + '/**/*.entity{.ts,.js}',
           __dirname + '/modules/specification/entities/*.entity{.ts,.js}',
           __dirname + '/modules/brand/entities/*.entity{.ts,.js}',
-          __dirname + '/modules/product/entities/*.entity{.ts,.js}',
+          // __dirname + '/modules/product/entities/*.entity{.ts,.js}',
           __dirname + '/modules/tag/entities/*.entity{.ts,.js}',
           // __dirname + '/modules/**/*entity{.ts,.js}',
         ],
@@ -57,6 +57,7 @@ import {ShopCartModule} from "@src/modules/shopCart/shopCart.module";
           pollPingInterval: 60, // 每隔60秒连接
           pollTimeout: 60, // 连接有效60秒
         },
+        autoLoadEntities: true,
       }),
       inject: [ConfigService],
     }),
