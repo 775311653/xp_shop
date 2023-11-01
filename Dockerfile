@@ -3,13 +3,14 @@ FROM node:18.16.0
 
 # 切换工作目录
 WORKDIR /app
-#复制package到工作目录
-COPY package*.json ./
-# 安装 pm2
-RUN yarn global add pm2
 
 # 因为您之前安装了cnpm，我假设您可能想使用淘宝的镜像加速，但是Yarn推荐使用淘宝的镜像源，这样：
 RUN yarn config set registry https://registry.npm.taobao.org/
+# 安装 pm2
+RUN yarn global add pm2
+
+#复制package到工作目录
+COPY package*.json ./
 
 RUN yarn global add @nestjs/cli
 
