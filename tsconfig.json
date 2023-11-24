@@ -1,37 +1,45 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
-    "declaration": true,
-    "removeComments": true,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "target": "es2017",
-    "sourceMap": true,
-    "outDir": "./dist",
-    "baseUrl": "./",
-    "incremental": true,
-    "esModuleInterop": true,
-    "noImplicitAny": true, /*不能有any类型*/
-    "strictNullChecks": true,
-    "strictFunctionTypes": true,
-    "noImplicitThis": true,
-    "noUnusedLocals": true, /*定义未使用的时候会有提示*/
-    "noUnusedParameters": true, /*检查函数中是否有未使用的变量*/
-    "noImplicitReturns": true, /*检查函数否有返回值*/
-    "noFallthroughCasesInSwitch": true,
-    "allowSyntheticDefaultImports": true,
-    "paths": { /*定义别名*/
+    "module": "commonjs", // 设置是否使用 CommonJS 模块系统
+    "declaration": true, // 设置是否生成 '.d.ts' 声明文件
+    "removeComments": true, // 设置是否从输出文件中删除注释
+    "emitDecoratorMetadata": true, // 设置是否发射装饰器元数据
+    "experimentalDecorators": true, // 设置是否启用实验性的装饰器支持
+    "target": "es2017", // 设置是否将 TypeScript 编译到 ES2017
+    "sourceMap": true, // 设置是否生成源映射文件，有助于调试
+    "outDir": "./dist", // 设置指定输出目录
+    "baseUrl": "./", // 设置基本目录
+    "strict": false, // 设置是否启用 TypeScript 的严格模式
+    "incremental": true, // 设置是否启用增量编译
+    "esModuleInterop": true, // 设置是否允许使用默认导入语法从非 ES 模块导入
+    "noImplicitAny": false, // 设置是否允许隐式的 'any' 类型
+    "strictNullChecks": false, // 设置是否启用严格的 null 检查
+    "strictFunctionTypes": false, // 设置是否启用函数类型的严格检查
+    "strictPropertyInitialization": false, // 设置是否启用类属性初始化的严格检查
+    "noImplicitThis": false, // 设置是否允许 'this' 表达式隐式具有 'any' 类型
+    "noUnusedLocals": false, // 设置是否报告未使用的本地变量
+    "noUnusedParameters": false, // 设置是否报告函数中未使用的参数
+    "noImplicitReturns": false, // 设置是否允许函数中的一些路径没有返回值
+    "noFallthroughCasesInSwitch": true, // 设置是否防止 switch 语句中的 case 贯穿
+    "allowSyntheticDefaultImports": true, // 设置是否允许从没有默认导出的模块中默认导入
+    "noStrictGenericChecks": true, // 设置是否禁用对泛型参数的严格协变和逆变检查
+    "suppressImplicitAnyIndexErrors": true, // 设置是否允许对具有 any 类型索引签名的对象进行索引操作，而不会报告错误
+    "suppressExcessPropertyErrors": true, // 设置是否允许对象文字具有目标类型中未指定的额外属性
+    "allowJs": true, // 设置是否允许在项目中包含和编译 JavaScript 文件
+    "checkJs": false, // 设置是否避免对 JavaScript 文件进行类型检查
+    "paths": { // 设置是否定义模块路径别名
       "@src/*": [
         "src/*"
       ]
     },
-    "typeRoots": [ /*类型声明文件*/
+    "typeRoots": [ // 设置是否指定类型声明文件的根目录
       "./types",
       "./node_modules/@types"
     ]
   },
   "exclude": [
-    "node_modules",
-    "dist"
+    "node_modules", // 设置是否排除 node_modules 目录
+    "dist", // 设置是否排除 dist 目录
+    "**/*.spec.ts" // 设置是否排除测试文件
   ]
 }

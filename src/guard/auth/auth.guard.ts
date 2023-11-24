@@ -16,7 +16,7 @@ import { ICurrentUserType } from '@src/decorators/current.user';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  constructor(private readonly apiAuthService: ApiAuthService) {}
+  constructor(private readonly apiAuthService: ApiAuthService = null) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
