@@ -4,7 +4,7 @@ import {ApiProperty, ApiPropertyOptional, IntersectionType, PartialType, PickTyp
 import {ProductDTO} from "@src/modules/product/dto/product.dto";
 import {QueryOptionsDto} from "@src/dto/query.options.dto";
 
-export class QueryProductDTO extends PartialType(PickType(ProductDTO,
+class BaseQueryProductDTO extends PartialType(PickType(ProductDTO,
   ['brand_id',
     'raw_price',
     'tag_ids',
@@ -20,16 +20,8 @@ export class QueryProductDTO extends PartialType(PickType(ProductDTO,
   @ApiPropertyOptional({required: false, description: '产品名称'})
   product_name: string;
 
-  @IsNumber()
-  @IsOptional()
-  @ApiPropertyOptional({required: false, description: 'id'})
-  id: number;
+}
 
-  @ApiPropertyOptional({required: false, description: '一页显示多少条'})
-  @IsOptional()
-  readonly pageSize?: number;
-
-  @ApiPropertyOptional({required: false, description: '当前页'})
-  @IsOptional()
-  readonly pageNumber?: number;
+// 需要再整合QueryOptionsDto里面的内容
+export class QueryProductDTO extends IntersectionType(BaseQueryProductDTO, QueryOptionsDto) {
 }

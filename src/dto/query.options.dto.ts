@@ -1,7 +1,12 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import { IsOptional } from 'class-validator';
+import {IsNumber, IsOptional} from 'class-validator';
 
 export class QueryOptionsDto {
+  @IsNumber()
+  @IsOptional()
+  @ApiPropertyOptional({required: false, description: 'id'})
+  id: number;
+
   @ApiPropertyOptional({ required: false, description: '一页显示多少条' })
   @IsOptional()
   readonly pageSize?: number;
