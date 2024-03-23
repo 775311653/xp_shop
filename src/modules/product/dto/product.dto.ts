@@ -66,7 +66,11 @@ export class ProductDTO {
 
   @IsArray()
   @IsOptional()
-  @ApiPropertyOptional({required: false, description: '标签id数组', example: [1, 2, 3]})
+  @ApiPropertyOptional({required: false,
+    description: '标签id数组',
+    example: [1, 2, 3],
+    type: [Number]
+  })
   tag_ids: number[];
 
   @IsDate()

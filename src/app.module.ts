@@ -84,10 +84,10 @@ import {ShopCartModule} from "@src/modules/shopCart/shopCart.module";
       useClass: LoggingInterceptor,
     },
     // 全局使用管道(数据校验)
-    {
-      provide: APP_PIPE,
-      useClass: ValidationPipe,
-    },
+    // {
+    //   provide: APP_PIPE,
+    //   useClass: ValidationPipe,
+    // },
     {
       provide: APP_INTERCEPTOR,
       useClass: ClassSerializerInterceptor,

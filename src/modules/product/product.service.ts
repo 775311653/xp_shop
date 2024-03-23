@@ -4,11 +4,12 @@ import {InjectRepository} from "@nestjs/typeorm";
 import {ProductEntity} from "@src/modules/Product/entities/product.entity";
 import {Like, Repository} from "typeorm";
 import {ProductListVo, ProductVo} from "@src/modules/product/product.vo";
-import {ProductReqDto} from "@src/modules/product/dto/product.req.dto";
 import {PageEnum} from "@src/enums";
 import {TagEntity} from "@src/modules/tag/entities/tag.entity";
 import {SpecificationOptionEntity} from "@src/modules/specificationOption/entities/specificationOption.entity";
 import config from "@src/config";
+import {UpdateProductDTO} from "@src/modules/product/dto/product.update.dto";
+import {QueryProductDTO} from "@src/modules/product/dto/product.query.dto";
 
 @Injectable()
 export class ProductService {
@@ -92,7 +93,7 @@ export class ProductService {
     }
   }
 
-  async getProductList(productReqDto: ProductReqDto): Promise<ProductListVo> {
+  async getProductList(productReqDto: QueryProductDTO): Promise<ProductListVo> {
     let {
       pageSize = PageEnum.PAGE_SIZE,
       pageNumber = PageEnum.PAGE_NUMBER,
@@ -137,7 +138,7 @@ export class ProductService {
     };
   }
 
-  async modifyProductById(id: number, productDTO: ProductDTO): Promise<ProductVo> {
+  async modifyProductById(id: number, productDTO: UpdateProductDTO): Promise<ProductVo> {
     let resUpdate = await this.productRepository.update(id, productDTO);
     if (resUpdate) {
       return await this.getProduct(id);

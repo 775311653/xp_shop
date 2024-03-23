@@ -15,7 +15,8 @@ import {ApiOkResponse, ApiOperation, ApiTags} from "@nestjs/swagger";
 import {ProductService} from "@src/modules/Product/product.service";
 import {ProductDTO} from "@src/modules/Product/dto/product.dto";
 import {ProductListVo, ProductVo} from "@src/modules/product/product.vo";
-import {ProductReqDto} from "@src/modules/product/dto/product.req.dto";
+import {UpdateProductDTO} from "@src/modules/product/dto/product.update.dto";
+import {QueryProductDTO} from "@src/modules/product/dto/product.query.dto";
 
 @ApiTags('商品管理')
 @Controller('product')
@@ -38,7 +39,7 @@ export class ProductController {
     description: '获取商品列表返回值',
   })
   @HttpCode(HttpStatus.OK)
-  async getProductList(@Query(new ValidationPipe({ transform: true })) productReqDto: ProductReqDto): Promise<ProductListVo> {
+  async getProductList(@Query() productReqDto: QueryProductDTO): Promise<ProductListVo> {
     return await this.productService.getProductList(productReqDto);
   }
 
@@ -63,8 +64,8 @@ export class ProductController {
     description: '修改商品返回值',
   })
   @HttpCode(HttpStatus.OK)
-  async modifyProductById(@Param('id', new ParseIntPipe()) id: number, @Body() productDTO: ProductDTO): Promise<ProductVo> {
-    return await this.productService.modifyProductById(id, productDTO);
+  async modifyProductById(@Param('id', new ParseIntPipe()) id: number, @Body() UpdateProductDTO: UpdateProductDTO): Promise<ProductVo> {
+    return await this.productService.modifyProductById(id, UpdateProductDTO);
   }
 
   @Delete(':id')

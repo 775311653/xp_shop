@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
-import { Logger } from '@nestjs/common';
+import {Logger, ValidationPipe} from '@nestjs/common';
 import helmet from 'helmet';
 
 import { AppModule } from './app.module';
@@ -52,6 +52,12 @@ async function bootstrap() {
   app.useStaticAssets(join(__dirname,'..', 'public'),{
     prefix: '/static/',   //设置虚拟路径
   });
+  app.useGlobalPipes(new ValidationPipe({
+    transform: true,
+    transformOptions: {
+      enableImplicitConversion: true
+    },
+  }));
 
   // 全局注册拦截器(成功返回格式)
   // app.useGlobalInterceptors(new TransformInterceptor());
