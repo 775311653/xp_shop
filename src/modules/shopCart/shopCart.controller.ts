@@ -39,7 +39,7 @@ export class ShopCartController {
     description: '获取购物车列表返回值',
   })
   @HttpCode(HttpStatus.OK)
-  async getShopCartList(@Query(new ValidationPipe({ transform: true })) shopCartReqDto: ShopCartReqDto): Promise<ShopCartListVo> {
+  async getShopCartList(@Query() shopCartReqDto: ShopCartReqDto): Promise<ShopCartListVo> {
     return await this.shopCartService.getShopCartList(shopCartReqDto);
   }
 

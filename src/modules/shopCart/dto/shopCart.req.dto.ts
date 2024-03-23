@@ -7,7 +7,6 @@ export class ShopCartReqDto extends QueryOptionsDto {
   @IsNotEmpty()
   @IsInt()
   @IsOptional()
-  @Type(() => Number)
   @ApiProperty({description: '用户ID', example: 1})
   user_id: number;
 }
