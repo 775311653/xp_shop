@@ -20,10 +20,10 @@ export class QueryProductDTO extends PartialType(PickType(ProductDTO,
   @ApiPropertyOptional({required: false, description: '产品名称'})
   product_name: string;
 
-  @IsString()
+  @IsNumber()
   @IsOptional()
   @ApiPropertyOptional({required: false, description: 'id'})
-  id: string;
+  id: number;
 
   @ApiPropertyOptional({required: false, description: '一页显示多少条'})
   @IsOptional()
